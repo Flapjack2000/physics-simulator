@@ -43,8 +43,8 @@ My goals for this project are fourfold:
 
 1) ~~Set up project dependencies~~
 2) ~~Get a window open (using GLFW)~~
-3) Create OpenGL context
-4) Create NanoVG context
+3) ~~Create OpenGL context~~
+4) ~~Create NanoVG context~~
 5) Draw a shape
 6) Structure simulation loop
     * delta time

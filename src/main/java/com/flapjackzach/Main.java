@@ -2,6 +2,7 @@ package com.flapjackzach;
 
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;
+import org.lwjgl.nanovg.NanoVGGL3;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
@@ -77,6 +78,10 @@ public class Main {
             // Get dimensions of usable desktop area
             glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), wx, wy, ww, wh);
 
+            // Important for NanoVG
+            glfwWindowHint(GLFW_STENCIL_BITS, 8);
+            glfwWindowHint(GLFW_DEPTH_BITS, 24);
+
             // Create the window
             window = glfwCreateWindow(ww.get(0), wh.get(0), "Physics Simulator", NULL, NULL);
             if (window == NULL) {
@@ -113,6 +118,12 @@ public class Main {
 
         // Background color
         glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+
+        // Create NanoVG context
+        long vg = NanoVGGL3.nvgCreate(NanoVGGL3.NVG_ANTIALIAS | NanoVGGL3.NVG_STENCIL_STROKES);
+        if (vg == NULL) {
+            throw new RuntimeException("Failed to create NanoVG context.");
+        }
 
         while (!glfwWindowShouldClose(window)) {
 
