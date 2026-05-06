@@ -94,7 +94,7 @@ public class Main {
         }
 
         // Close after escape key is pressed
-        keyCallback = glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
+        keyCallback = glfwSetKeyCallback(window, (window, key, _, action, _) -> {
             if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
                 glfwSetWindowShouldClose(window, true);
             }
