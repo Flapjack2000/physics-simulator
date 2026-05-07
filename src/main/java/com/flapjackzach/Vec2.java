@@ -30,11 +30,11 @@ public record Vec2(double x, double y) {
     }
 
     public double dot(Vec2 other) {
-        return x * y + other.x * other.y;
+        return x * other.x + y * other.y;
     }
 
     public double cross(Vec2 other) {
-        return x * other.y + other.x * y;
+        return x * other.y - other.x * y;
     }
 
     public Vec2 scale(double scalar) {
