@@ -48,10 +48,10 @@ public class Main {
         glfwFreeCallbacks(window);
         glfwDestroyWindow(window);
 
-        // Terminate GLFW and free the error callback
+        // Free the error callbacks and terminate GLFW
+        if (keyCallback != null) keyCallback.free();
+        if (errorCallback != null) errorCallback.free();
         glfwTerminate();
-        keyCallback.free();
-        errorCallback.free();
     }
 
 
