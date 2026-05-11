@@ -52,7 +52,8 @@ public record Vec2(double x, double y) {
                             "and the zero vector doesn't make any sense."
             );
         }
-        return dot(other) / magnitude() * other.magnitude();
+        double cosAngle = dot(other) / (magnitude() * other.magnitude());
+        return Math.acos(Math.clamp(cosAngle, -1.0, 1.0));
     }
 
     public Vec2 normalize() {
