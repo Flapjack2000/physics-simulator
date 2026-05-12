@@ -1,9 +1,42 @@
 # Physics Simulator
 <!-- TOC -->
 * [Physics Simulator](#physics-simulator)
+    * [Update 02 - Electric Boogaloo](#update-02---electric-boogaloo)
     * [Update 01 - Hello World](#update-01---hello-world)
     * [To Do List:](#to-do-list)
 <!-- TOC -->
+
+
+### Update 02 - Electric Boogaloo
+
+May 12, 2026
+
+I've accomplished much of the setup work for this project. The application now displays a window, 
+and I've built out the Vec2 and Mat3 classes. I'll be using 3x3 matrices to store the coordinate 
+frames of my objects.
+
+I felt proud when I managed to compute the product of any two 3x3 matrices programmatically. I pushed 
+through a headache to do that.
+
+I feel more comfortable with Java now that I've been fiddling with this project for a week. 
+There is a lot of knowledge transfer between the fundamentals of one programming language and another. 
+I expect to learn a lot about inheritance and polymorphism when I work on the Shape class and its children.
+An understanding of the Java ecosystem will come with time. 
+
+I'm thinking about how I want to handle collision. 
+
+* My first thought was to simply create overloaded methods on each of the shapes. 
+Circle.checkCollision(Square square), for instance.
+
+* My second thought was to create a Collision class that can detect collisions 
+between any two shapes.
+
+I'll have to research this problem.
+
+I want to start rendering things soon, so I'm going to work on the Shape and Circle classes, then try 
+rendering a Circle on the screen.
+
+
 ### Update 01 - Hello World
 
 May 5, 2026
