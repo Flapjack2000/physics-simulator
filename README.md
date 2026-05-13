@@ -90,12 +90,12 @@ My goals for this project are fourfold:
     * mass
     * shape
 8) Math library
-    * Vec2
-    * Mat3
-    * transform operations
-        * translation
-        * rotation
-        * scaling
+    * ~~Vec2~~
+    * ~~Mat3~~
+    * ~~transform operations~~
+        * ~~translation~~
+        * ~~rotation~~
+        * ~~scaling~~
     * linear interpolation
 9) Kinematics
     * gravity
@@ -112,6 +112,7 @@ My goals for this project are fourfold:
     * impulse resolution
     * restitution
 12) Mouse interaction
+    * get mouse position
     * object spawning
 13) UI (using NanoVG)
     * object count
