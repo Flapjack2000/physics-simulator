@@ -20,23 +20,31 @@ public final class Mat3 {
         this.entries = entries;
     }
 
-    public static Mat3 IDENTITY = new Mat3(new double[]{
+    public final static Mat3 IDENTITY = new Mat3(new double[]{
             1, 0, 0,
             0, 1, 0,
             0, 0, 1
     });
 
-    public static Mat3 ZERO = new Mat3(new double[]{
+    public final static Mat3 ZERO = new Mat3(new double[]{
             0, 0, 0,
             0, 0, 0,
             0, 0, 0
     });
 
-    public static Mat3 ONE = new Mat3(new double[]{
+    public final static Mat3 ONE = new Mat3(new double[]{
             1, 1, 1,
             1, 1, 1,
             1, 1, 1
     });
+
+    public Vec2 getXAxis() {
+        return new Vec2(entries[0], entries[3]);
+    }
+
+    public Vec2 getYAxis() {
+        return new Vec2(entries[1], entries[4]);
+    }
 
     public static Mat3 fromTranslation(Vec2 vector) {
         return new Mat3(new double[]{
@@ -47,11 +55,11 @@ public final class Mat3 {
     }
 
     public static Mat3 fromTranslation(double x, double y) {
-        return new Mat3(new double[]{
-                1, 0, x,
-                0, 1, y,
-                0, 0, 1
-        });
+        return fromTranslation(new Vec2(x, y));
+    }
+
+    public Vec2 getTranslation() {
+        return new Vec2(entries[2], entries[5]);
     }
 
     public static Mat3 fromRotation(double radians) {
@@ -66,6 +74,20 @@ public final class Mat3 {
         return fromRotation(Math.PI * degrees / 180);
     }
 
+    public double getRotation() {
+        Vec2 x = getXAxis();
+        Vec2 y = getYAxis();
+
+        if (Math.abs(x.dot(y) / (x.magnitude() * y.magnitude())) > 1e-9) {
+            throw new IllegalStateException(
+                    "Matrix has skew and cannot be cleanly decomposed."
+            );
+        }
+
+        double scaleX = x.magnitude();
+        return Math.atan2(x.y() / scaleX, x.x() / scaleX);
+    }
+
     public static Mat3 fromScale(double scaleX, double scaleY) {
         return new Mat3(new double[]{
                 scaleX, 0, 0,
@@ -76,6 +98,13 @@ public final class Mat3 {
 
     public static Mat3 fromScale(double scale) {
         return fromScale(scale, scale);
+    }
+
+    public Vec2 getScale() {
+        return new Vec2(
+                getXAxis().magnitude(),
+                getYAxis().magnitude()
+        );
     }
 
     public static Mat3 fromTRS(Vec2 position, double rotation, Vec2 scale) {
@@ -99,6 +128,19 @@ public final class Mat3 {
         return Arrays.equals(entries, other.entries);
     }
 
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(entries);
+    }
+
+    public Mat3 scaleEntries(double scalar) {
+        double[] scaled = new double[9];
+        for (int i = 0; i < 9; i++) {
+            scaled[i] = entries[i] * scalar;
+        }
+        return new Mat3(scaled);
+    }
+
     public Mat3 transpose() {
         double[] transpose = new double[9];
         for (int i = 0; i < 3; i++)
@@ -113,6 +155,35 @@ public final class Mat3 {
                         - entries[1] * (entries[3] * entries[8] - entries[5] * entries[6])
                         + entries[2] * (entries[3] * entries[7] - entries[4] * entries[6])
         );
+    }
+
+    public boolean isInvertible() {
+        return Math.abs(determinant()) > 1e-9;
+    }
+
+    public Mat3 inverse() {
+
+        double det = determinant();
+
+        if (Math.abs(det) < 1e-9) {
+            throw new IllegalArgumentException("Matrix is not invertible (determinant is zero).");
+        }
+
+        // Method of cofactors
+        double[] cofactor = new double[]{
+                ((entries[4] * entries[8]) - (entries[5] * entries[7])),
+                -((entries[3] * entries[8]) - (entries[5] * entries[6])),
+                ((entries[3] * entries[7]) - (entries[4] * entries[6])),
+                -((entries[1] * entries[8]) - (entries[2] * entries[7])),
+                ((entries[0] * entries[8]) - (entries[2] * entries[6])),
+                -((entries[0] * entries[7]) - (entries[1] * entries[6])),
+                ((entries[1] * entries[5]) - (entries[2] * entries[4])),
+                -((entries[0] * entries[5]) - (entries[2] * entries[3])),
+                ((entries[0] * entries[4]) - (entries[1] * entries[3]))
+        };
+        return new Mat3(cofactor)
+                .transpose()
+                .scaleEntries(1.0 / det);
     }
 
     public Mat3 multiply(Mat3 right) {
